@@ -15,14 +15,14 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_id,
                                                redirect_uri='http://localhost:8888/callback',
                                                scope="user-read-currently-playing"))
 
-window = Tk()  # Makes main window
+window = Tk()
 window.overrideredirect(True)
 window.overrideredirect(False)  # For MacOS
 # window.attributes('-fullscreen', True)
 window.wm_attributes("-topmost", True)
 window.geometry("+64+64")
 display1 = Label(window)
-display1.grid(row=1, column=0, padx=0, pady=0)  # Display 1
+display1.grid(row=1, column=0, padx=0, pady=0)
 
 
 def show_frame():
@@ -32,10 +32,11 @@ def show_frame():
     raw_data = urllib.request.urlopen(album_cover).read()
     img = Image.open(io.BytesIO(raw_data))
     img_tk = ImageTk.PhotoImage(img)
-    display1.imgtk = img_tk  # Shows frame for display 1
+    display1.imgtk = img_tk
     display1.configure(image=img_tk)
 
-    window.after(1000, show_frame)
+    # https://stackoverflow.com/questions/46322838/any-ideas-about-rate-limit-request-minute-on-spotify-api
+    window.after(1000, show_frame) # run show_frame() every 500 ms
 
 
 show_frame()
